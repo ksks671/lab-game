@@ -15,6 +15,8 @@ public class TrainLeverController : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float timeLimit = 60f;
 
+    [SerializeField] private Transform leverObject;
+
     private float timer;
     private bool sequenceFinished;
 
@@ -63,8 +65,8 @@ public class TrainLeverController : MonoBehaviour
         {
             Debug.Log("Raycast hit: " + hit.transform.name);
 
-            if (hit.transform == transform ||
-                hit.transform.IsChildOf(transform))
+            if (hit.transform == leverObject ||
+                hit.transform.IsChildOf(leverObject))
             {
                 Debug.Log("LEVER CLICKED!");
 
@@ -134,6 +136,8 @@ public class TrainLeverController : MonoBehaviour
             leverAnimator.GetCurrentAnimatorStateInfo(0).length;
 
         yield return new WaitForSeconds(animationLength);
+
+       
     }
 }
 

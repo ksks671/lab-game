@@ -389,7 +389,8 @@ MonoBehaviour:
   leverPullTrigger: LeverPull
   trainRightTrigger: TrainRight
   trainStraightTrigger: TrainStraight
-  timeLimit: 60
+  timeLimit: 10
+  leverObject: {fileID: 755868052}
 --- !u!4 &75473559
 Transform:
   m_ObjectHideFlags: 0
@@ -5541,7 +5542,7 @@ GameObject:
   - component: {fileID: 755868049}
   - component: {fileID: 755868048}
   m_Layer: 0
-  m_Name: Cube (2)
+  m_Name: Lever
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12308,7 +12309,7 @@ Transform:
   m_GameObject: {fileID: 1929146777}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.65, y: 1.8, z: 20.29}
+  m_LocalPosition: {x: -7.93, y: 1.8, z: -29.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12784,7 +12785,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.07, y: 0.35, z: 0.5}
-  m_LocalScale: {x: 28.805, y: 1, z: 63.838093}
+  m_LocalScale: {x: 42.80711, y: 1, z: 63.838093}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
