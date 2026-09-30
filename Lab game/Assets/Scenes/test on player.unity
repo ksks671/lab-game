@@ -255,7 +255,7 @@ Transform:
   m_GameObject: {fileID: 338578311}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.82289, y: 0.58386, z: 34.83375}
+  m_LocalPosition: {x: -2.82289, y: 2.176, z: 31.603}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -713,7 +713,7 @@ GameObject:
   - component: {fileID: 512725866}
   - component: {fileID: 512725867}
   m_Layer: 0
-  m_Name: idle
+  m_Name: door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -834,6 +834,52 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &665455557
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 665455559}
+  - component: {fileID: 665455558}
+  m_Layer: 0
+  m_Name: loader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &665455558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665455557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b292939ea31f5846a847b9359fcfd30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelLoader
+  fadeGroup: {fileID: 0}
+  fadeTime: 1
+--- !u!4 &665455559
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665455557}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 25.45107, y: -4.222, z: 31.18994}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &682591953
 GameObject:
   m_ObjectHideFlags: 0
@@ -1077,6 +1123,8 @@ GameObject:
   m_Component:
   - component: {fileID: 884763280}
   - component: {fileID: 884763281}
+  - component: {fileID: 884763282}
+  - component: {fileID: 884763283}
   m_Layer: 0
   m_Name: CinemachineCamera (1)
   m_TagString: Untagged
@@ -1092,8 +1140,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 884763279}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.6087617, z: -0, w: 0.7933532}
-  m_LocalPosition: {x: -0.4971099, y: 1.7481401, z: -2.4177513}
+  m_LocalRotation: {x: 0.57357645, y: 0, z: 0, w: 0.81915206}
+  m_LocalPosition: {x: 0, y: 0, z: -0.369}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1142,6 +1190,85 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &884763282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884763279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62d54399b04b4fa48a73e121d4937dd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachinePanTilt
+  ReferenceFrame: 0
+  RecenterTarget: 0
+  PanAxis:
+    Value: 0
+    Center: 0
+    Range: {x: -360, y: 360}
+    Wrap: 1
+    Recentering:
+      Enabled: 0
+      Wait: 1
+      Time: 2
+    Restrictions: 0
+  TiltAxis:
+    Value: 0
+    Center: 0
+    Range: {x: -70, y: 70}
+    Wrap: 0
+    Recentering:
+      Enabled: 0
+      Wait: 1
+      Time: 2
+    Restrictions: 0
+--- !u!114 &884763283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884763279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89875cdc57c54474a8a74efd9b2a3b5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineInputAxisController
+  ScanRecursively: 1
+  SuppressInputWhileBlending: 1
+  IgnoreTimeScale: 0
+  m_ControllerManager:
+    Controllers:
+    - Name: Look X (Pan)
+      Owner: {fileID: 884763282}
+      Enabled: 1
+      Input:
+        InputAction: {fileID: -5630151704836100654, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+        Gain: 3
+        LegacyInput: 
+        LegacyGain: 1
+        CancelDeltaTime: 0
+      InputValue: 0
+      Driver:
+        AccelTime: 0
+        DecelTime: 0
+    - Name: Look Y (Tilt)
+      Owner: {fileID: 884763282}
+      Enabled: 1
+      Input:
+        InputAction: {fileID: 0}
+        Gain: 1
+        LegacyInput: 
+        LegacyGain: 1
+        CancelDeltaTime: 0
+      InputValue: 0
+      Driver:
+        AccelTime: 0
+        DecelTime: 0
+  PlayerIndex: -1
+  AutoEnableInputs: 1
 --- !u!1001 &885839876
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1770,7 +1897,7 @@ Transform:
   m_GameObject: {fileID: 1020400360}
   serializedVersion: 2
   m_LocalRotation: {x: 0.00000008940697, y: -0.00000008940697, z: -0.7071065, w: 0.70710707}
-  m_LocalPosition: {x: 0.01032, y: 0.01558, z: 0.0003}
+  m_LocalPosition: {x: 0.00519, y: 0.01558, z: 0.0003}
   m_LocalScale: {x: 2.531364, y: 0.18503486, z: 2.531364}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3318,7 +3445,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1797708079}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -3.32, y: 2.332, z: 40.384}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3996,10 +4123,10 @@ MonoBehaviour:
   lookRigBody: {fileID: 338578312}
   cageDoor: {fileID: 512725867}
   cageDoorTrigger: Close
-  cageDoorTime: 6
+  cageDoorTime: 5
   bridge: {fileID: 1865724569}
   bridgeTrigger: Retract
-  bridgeTime: 6
+  bridgeTime: 5
   lightsInOrder:
   - {fileID: 1383869912}
   - {fileID: 945935220}
@@ -4008,10 +4135,15 @@ MonoBehaviour:
   - {fileID: 1003957310}
   lightGap: 0.6
   steps:
-  - presenterLine: 
+  - presenterLine: 'hello '
     contestantIndex: 0
-    contestantAnswer: 
-    answerAtSeconds: 0
+    contestantAnswer: hello
+    answerAtSeconds: 5
+    isCorrect: 1
+  - presenterLine: 'hello '
+    contestantIndex: 0
+    contestantAnswer: hello
+    answerAtSeconds: 5
     isCorrect: 0
   presenterName: Presenter
   contestantNames:
@@ -4173,3 +4305,4 @@ SceneRoots:
   - {fileID: 1936078999}
   - {fileID: 1670252968}
   - {fileID: 338578313}
+  - {fileID: 665455559}

@@ -427,7 +427,7 @@ Transform:
   m_GameObject: {fileID: 235097485}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 2.7678201, y: 8.939999, z: -0.58350945}
+  m_LocalPosition: {x: 2.7678201, y: 8.939999, z: -2.09}
   m_LocalScale: {x: 1.3182, y: 1.3181999, z: 1.3181999}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1539,6 +1539,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &991631305
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 991631307}
+  - component: {fileID: 991631306}
+  m_Layer: 0
+  m_Name: loadrer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &991631306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 991631305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b292939ea31f5846a847b9359fcfd30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelLoader
+  fadeGroup: {fileID: 0}
+  fadeTime: 1
+--- !u!4 &991631307
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 991631305}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -14.14565, y: 0.85, z: 7.50307}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1006672671
 GameObject:
   m_ObjectHideFlags: 0
@@ -1884,7 +1930,7 @@ Transform:
   m_GameObject: {fileID: 1104690697}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 2.7678201, y: 8.939999, z: -2.17}
+  m_LocalPosition: {x: 2.7678201, y: 8.939999, z: -3.1}
   m_LocalScale: {x: 1.3182, y: 1.3181999, z: 1.3181999}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2000,7 +2046,7 @@ Transform:
   m_GameObject: {fileID: 1162532320}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -3.32, y: 2.07, z: 4.487}
+  m_LocalPosition: {x: -3.32, y: 2.07, z: 28.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2780,7 +2826,7 @@ Transform:
   m_GameObject: {fileID: 1797708079}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: -3.32, y: 2.332, z: 4.011}
+  m_LocalPosition: {x: -3.32, y: 2.332, z: 27.624}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3684,6 +3730,7 @@ GameObject:
   - component: {fileID: 543450653516074937}
   - component: {fileID: 919132149246317829}
   - component: {fileID: 919132149246317828}
+  - component: {fileID: 919132149246317830}
   m_Layer: 0
   m_Name: exp1
   m_TagString: Untagged
@@ -3732,6 +3779,34 @@ MonoBehaviour:
   needleMinAngle: -150
   needleMaxAngle: 160
   turnSpeed: 0.3
+--- !u!114 &919132149246317830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149246317827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ed8fd82a7b9344392f79d80bed2508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ContinueExitPrompt
+  dial: {fileID: 919132149246317829}
+  loader: {fileID: 991631306}
+  promptPanel: {fileID: 0}
+  promptText: {fileID: 0}
+  continueButton: {fileID: 0}
+  exitButton: {fileID: 0}
+  thresholds:
+  - 0.25
+  - 0.5
+  - 0.75
+  - 1
+  promptLines:
+  - Please continue.
+  - The experiment requires that you continue.
+  - It is absolutely essential that you continue.
+  - You have no other choice, you must go on.
 --- !u!1 &1023426908573433206
 GameObject:
   m_ObjectHideFlags: 0
@@ -5373,3 +5448,4 @@ SceneRoots:
   - {fileID: 603477221}
   - {fileID: 217458351}
   - {fileID: 309991103}
+  - {fileID: 991631307}

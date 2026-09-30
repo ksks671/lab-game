@@ -17,6 +17,14 @@ public class TrainLeverController : MonoBehaviour
 
     [SerializeField] private Transform leverObject;
 
+
+    [Header("Door")]
+    [SerializeField] private Animator doorAnimator;
+    [SerializeField] private string doorOpenTrigger = "Open";
+    [SerializeField] private float doorExtraDelay = 1f; // pause after the train finishes
+
+    [SerializeField] private string leverStateName = "change";
+
     private float timer;
     private bool sequenceFinished;
 
@@ -108,12 +116,35 @@ public class TrainLeverController : MonoBehaviour
 
         StartCoroutine(PlayStraightTrain());
     }
+    private IEnumerator WaitForLeverAnimation()
+    {
+        yield return null;
 
+        // wait for the lever state to start, with a safety timeout so it can never hang
+        float waited = 0f;
+        while (!leverAnimator.GetCurrentAnimatorStateInfo(0).IsName(leverStateName))
+        {
+            waited += Time.deltaTime;
+            if (waited > 5f)
+            {
+                Debug.LogWarning("Lever state '" + leverStateName + "' never started. Check the state name in the Animator.", this);
+                yield break;
+            }
+            yield return null;
+        }
+
+        while (leverAnimator.IsInTransition(0))
+            yield return null;
+
+        yield return new WaitForSeconds(leverAnimator.GetCurrentAnimatorStateInfo(0).length);
+    }
     private IEnumerator PlayRightTrain()
     {
         yield return WaitForLeverAnimation();
 
         trainAnimator.SetTrigger(trainRightTrigger);
+        yield return WaitForTrainAnimation();
+        yield return OpenDoor();
     }
 
     private IEnumerator PlayStraightTrain()
@@ -121,23 +152,34 @@ public class TrainLeverController : MonoBehaviour
         yield return WaitForLeverAnimation();
 
         trainAnimator.SetTrigger(trainStraightTrigger);
+        yield return WaitForTrainAnimation();
+        yield return OpenDoor();
     }
 
-    private IEnumerator WaitForLeverAnimation()
+    private IEnumerator WaitForTrainAnimation()
     {
-        yield return null;
+        yield return null; // let the trigger take effect
 
-        while (!leverAnimator.GetCurrentAnimatorStateInfo(0).IsName("LeverPull"))
-        {
+        while (trainAnimator.IsInTransition(0))
             yield return null;
+
+        float length = trainAnimator.GetCurrentAnimatorStateInfo(0).length;
+        Debug.Log("Train animation playing, length: " + length);
+        yield return new WaitForSeconds(length);
+    }
+
+    private IEnumerator OpenDoor()
+    {
+        yield return new WaitForSeconds(doorExtraDelay);
+
+        if (doorAnimator == null)
+        {
+            Debug.LogWarning("Door Animator is not assigned!", this);
+            yield break;
         }
 
-        float animationLength =
-            leverAnimator.GetCurrentAnimatorStateInfo(0).length;
-
-        yield return new WaitForSeconds(animationLength);
-
-       
+        Debug.Log("Door opening.");
+        doorAnimator.SetTrigger(doorOpenTrigger);
     }
 }
 
