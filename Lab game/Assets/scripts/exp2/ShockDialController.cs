@@ -17,6 +17,8 @@ public class ShockDialController : MonoBehaviour
     private Quaternion dialStart, needleStart;
     private bool active;
 
+    public bool IsActive => active;
+
     public float Value { get; private set; }  // 0 to 1, use this for shock level later
 
     private void Awake()
