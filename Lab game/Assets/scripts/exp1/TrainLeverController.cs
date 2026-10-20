@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using TMPro; // NEW
 
 public class TrainLeverController : MonoBehaviour
 {
@@ -17,6 +18,11 @@ public class TrainLeverController : MonoBehaviour
 
     [SerializeField] private Transform leverObject;
 
+    [Header("Timer UI")] // NEW
+    [SerializeField] private TMP_Text timerText;
+    [SerializeField] private Color normalColor = Color.white;
+    [SerializeField] private Color warningColor = Color.red;
+    [SerializeField] private float warningThreshold = 10f; // turns red under this many seconds
 
     [Header("Door")]
     [SerializeField] private Animator doorAnimator;
@@ -37,6 +43,11 @@ public class TrainLeverController : MonoBehaviour
 
         if (trainAnimator == null)
             Debug.LogError("Train Animator is not assigned!", this);
+
+        if (timerText == null)
+            Debug.LogWarning("Timer Text is not assigned!", this);
+
+        UpdateTimerUI(); // NEW
     }
 
     private void Update()
@@ -45,6 +56,7 @@ public class TrainLeverController : MonoBehaviour
             return;
 
         timer -= Time.deltaTime;
+        UpdateTimerUI(); // NEW
 
         if (timer <= 0f)
         {
@@ -57,6 +69,27 @@ public class TrainLeverController : MonoBehaviour
             Debug.Log("LEFT CLICK DETECTED");
             CheckLeverClick();
         }
+    }
+
+    // NEW
+    private void UpdateTimerUI()
+    {
+        if (timerText == null)
+            return;
+
+        float displayTime = Mathf.Max(timer, 0f);
+        int minutes = Mathf.FloorToInt(displayTime / 60f);
+        int seconds = Mathf.CeilToInt(displayTime % 60f);
+
+        // CeilToInt can give 60, so roll it over into the minutes
+        if (seconds == 60)
+        {
+            minutes++;
+            seconds = 0;
+        }
+
+        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        timerText.color = displayTime <= warningThreshold ? warningColor : normalColor;
     }
 
     private void CheckLeverClick()
@@ -116,6 +149,7 @@ public class TrainLeverController : MonoBehaviour
 
         StartCoroutine(PlayStraightTrain());
     }
+
     private IEnumerator WaitForLeverAnimation()
     {
         yield return null;
@@ -138,6 +172,7 @@ public class TrainLeverController : MonoBehaviour
 
         yield return new WaitForSeconds(leverAnimator.GetCurrentAnimatorStateInfo(0).length);
     }
+
     private IEnumerator PlayRightTrain()
     {
         yield return WaitForLeverAnimation();
@@ -182,4 +217,3 @@ public class TrainLeverController : MonoBehaviour
         doorAnimator.SetTrigger(doorOpenTrigger);
     }
 }
-
