@@ -11,11 +11,15 @@ public class ResultScreen : MonoBehaviour
 {
     [Header("UI")]
     [SerializeField] private GameObject panel;          // the result panel (starts hidden)
-    [SerializeField] private CanvasGroup panelGroup;    // CanvasGroup on that panel, used for the fade-in
+    [SerializeField] private CanvasGroup panelGroup;    // optional: CanvasGroup on that panel, used for the fade-in
     [SerializeField] private TMP_Text titleText;        // big title, e.g. "The Realist"
     [SerializeField] private TMP_Text bodyText;         // explanation + speed + notebook lines
-    [SerializeField] private Button restartButton;      // a button inside the result panel
+    [SerializeField] private Button restartButton;      // the Restart button inside the result panel
     [SerializeField] private float fadeTime = 1.5f;
+
+    [Header("Restart")]
+    [Tooltip("Pressing this key also restarts the level.")]
+    [SerializeField] private KeyCode restartKey = KeyCode.R;
 
     [Header("Speed thresholds (seconds)")]
     [SerializeField] private float decisiveSeconds = 5f;   // at or under this = "decisive thinker"
@@ -52,11 +56,16 @@ public class ResultScreen : MonoBehaviour
     [TextArea(1, 3)]
     [SerializeField] private string normalLine = "You decided in {0} seconds.";
 
+    private bool resultShown;   // the result screen is up
+    private bool canRestart;    // the fade has finished, so restarting is allowed
+    private bool restarting;    // guard so the level only reloads once
+
     private void Awake()
     {
         if (panel == gameObject)
             Debug.LogError("ResultScreen: this script is on the result panel itself. Move it to an always-active object (e.g. the Canvas).", this);
 
+        // The button still works through Unity's normal UI events if they are set up correctly...
         if (restartButton != null)
             restartButton.onClick.AddListener(RestartLevel);
         else
@@ -66,10 +75,66 @@ public class ResultScreen : MonoBehaviour
             panel.SetActive(false);
     }
 
+    private void Update()
+    {
+        if (!canRestart)
+            return;
+
+        // ...but these two do not depend on the EventSystem at all, so they always work.
+        if (Input.GetKeyDown(restartKey))
+            RestartLevel();
+        else if (Input.GetMouseButtonDown(0) && ClickedRestartButton())
+            RestartLevel();
+    }
+
+    // Keeps the mouse free while the result is up, even if the player controller tries to lock it again
+    private void LateUpdate()
+    {
+        if (!resultShown)
+            return;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    // Checks the mouse position against the button's rectangle directly (no EventSystem / raycasting needed)
+    private bool ClickedRestartButton()
+    {
+        if (restartButton == null || !restartButton.gameObject.activeInHierarchy)
+            return false;
+
+        RectTransform rect = restartButton.transform as RectTransform;
+        Canvas canvas = restartButton.GetComponentInParent<Canvas>();
+        Camera cam = (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay) ? canvas.worldCamera : null;
+
+        return RectTransformUtility.RectangleContainsScreenPoint(rect, Input.mousePosition, cam);
+    }
+
     public void RestartLevel()
     {
-        // reloads the current scene, so the timer, lever, train and notepad all start fresh
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (restarting)
+            return;
+        restarting = true;
+
+        Debug.Log("ResultScreen: Restart clicked");
+
+        int index = SceneManager.GetActiveScene().buildIndex;
+
+        if (index >= 0)
+        {
+            SceneManager.LoadScene(index);
+            return;
+        }
+
+#if UNITY_EDITOR
+        // Scene isn't in Build Settings: still restart while testing in the editor
+        UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(
+            SceneManager.GetActiveScene().path,
+            new LoadSceneParameters(LoadSceneMode.Single));
+#else
+        restarting = false;
+        Debug.LogError("ResultScreen: this scene isn't in the Build Settings. Add it under File > Build Profiles > Scene List.", this);
+#endif
     }
 
     // savedTheOne = the train hit the group and spared the single person
@@ -118,6 +183,7 @@ public class ResultScreen : MonoBehaviour
         if (bodyText != null) bodyText.text = body.ToString();
 
         // make sure the mouse is usable on the result screen
+        resultShown = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
@@ -127,14 +193,19 @@ public class ResultScreen : MonoBehaviour
 
     private IEnumerator FadeIn()
     {
+        canRestart = false;
+
         if (panel != null)
             panel.SetActive(true);
 
         if (panelGroup == null)
+        {
+            canRestart = true;
             yield break;
+        }
 
         panelGroup.alpha = 0f;
-        panelGroup.interactable = false;   // the button can't be clicked until the fade has finished
+        panelGroup.interactable = false;   // the UI button can't be clicked until the fade has finished
         float t = 0f;
         while (t < fadeTime)
         {
@@ -144,5 +215,6 @@ public class ResultScreen : MonoBehaviour
         }
         panelGroup.alpha = 1f;
         panelGroup.interactable = true;
+        canRestart = true;
     }
 }

@@ -2505,12 +2505,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 251385396}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -399.99994, y: -224.99997, z: 0}
+  m_LocalScale: {x: 0.2083333, y: 0.2083333, z: 0.2083333}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1362661462}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &283750265
 GameObject:
@@ -3624,7 +3624,7 @@ GameObject:
   - component: {fileID: 404729852}
   - component: {fileID: 404729851}
   m_Layer: 5
-  m_Name: RawImage
+  m_Name: notepad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10135,7 +10135,7 @@ GameObject:
   - component: {fileID: 1154895558}
   - component: {fileID: 1154895557}
   m_Layer: 5
-  m_Name: w
+  m_Name: button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10158,7 +10158,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -51.6}
+  m_AnchoredPosition: {x: 0, y: -51.59999}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1154895557
@@ -10254,8 +10254,9 @@ GameObject:
   - component: {fileID: 1184914096}
   - component: {fileID: 1184914098}
   - component: {fileID: 1184914097}
+  - component: {fileID: 1184914099}
   m_Layer: 5
-  m_Name: RawImage (1)
+  m_Name: results
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10318,6 +10319,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1184914095}
   m_CullTransparentMesh: 1
+--- !u!225 &1184914099
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184914095}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1203754551
 GameObject:
   m_ObjectHideFlags: 0
@@ -12392,6 +12405,7 @@ RectTransform:
   m_Children:
   - {fileID: 404729853}
   - {fileID: 1184914096}
+  - {fileID: 251385399}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -12412,11 +12426,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResultScreen
   panel: {fileID: 1184914095}
-  panelGroup: {fileID: 0}
+  panelGroup: {fileID: 1184914099}
   titleText: {fileID: 812763753}
   bodyText: {fileID: 669762204}
   restartButton: {fileID: 1154895557}
   fadeTime: 1.5
+  restartKey: 114
   decisiveSeconds: 5
   carefulSeconds: 30
   realistTitle: The Realist
@@ -21491,7 +21506,6 @@ SceneRoots:
   - {fileID: 541415376}
   - {fileID: 1974110731}
   - {fileID: 415633349}
-  - {fileID: 251385399}
   - {fileID: 488057538}
   - {fileID: 791365462}
   - {fileID: 543450652795454953}
