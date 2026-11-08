@@ -24,15 +24,24 @@ public class TrainLeverController : MonoBehaviour
     [SerializeField] private Color warningColor = Color.red;
     [SerializeField] private float warningThreshold = 10f; // turns red under this many seconds
 
-    [Header("Door")]
-    [SerializeField] private Animator doorAnimator;
-    [SerializeField] private string doorOpenTrigger = "Open";
-    [SerializeField] private float doorExtraDelay = 1f; // pause after the train finishes
+    [Header("Result")] // NEW
+    [SerializeField] private ResultScreen resultScreen;
+    [Tooltip("Ticked: pulling the lever runs over the SINGLE person (and does nothing = the group of 4 is hit). Unticked: the other way round.")]
+    [SerializeField] private bool leverHitsSingleTrack = true;
+    [SerializeField] private float resultDelay = 1f; // pause after the train finishes before the result appears
+    [Tooltip("Middle mouse button deliberately lets the train run without pulling the lever. Waiting until the timer ends counts as freezing instead.")]
+    [SerializeField] private int letItRunMouseButton = 2; // 0 = left, 1 = right, 2 = middle
 
     [SerializeField] private string leverStateName = "change";
 
     private float timer;
     private bool sequenceFinished;
+    private bool straightWasTimeout; // true = the player froze, false = they pressed the "let it run" key
+
+    // captured the moment the player decides (or runs out of time)
+    private float decisionTime;
+    private int lookedAt;
+    private int totalPeople;
 
     private void Start()
     {
@@ -47,6 +56,9 @@ public class TrainLeverController : MonoBehaviour
         if (timerText == null)
             Debug.LogWarning("Timer Text is not assigned!", this);
 
+        if (resultScreen == null)
+            Debug.LogWarning("Result Screen is not assigned!", this);
+
         UpdateTimerUI(); // NEW
     }
 
@@ -60,7 +72,13 @@ public class TrainLeverController : MonoBehaviour
 
         if (timer <= 0f)
         {
-            StraightRoute();
+            StraightRoute(true); // ran out of time
+            return;
+        }
+
+        if (Input.GetMouseButtonDown(letItRunMouseButton))
+        {
+            StraightRoute(false); // deliberate choice to do nothing
             return;
         }
 
@@ -120,12 +138,28 @@ public class TrainLeverController : MonoBehaviour
         }
     }
 
+    // NEW: record how long it took and how many people the player looked at
+    private void CaptureDecision()
+    {
+        decisionTime = timeLimit - Mathf.Max(timer, 0f);
+
+        PersonProfile[] people = FindObjectsByType<PersonProfile>(FindObjectsSortMode.None);
+        totalPeople = people.Length;
+        lookedAt = 0;
+        foreach (PersonProfile p in people)
+            if (p.discovered)
+                lookedAt++;
+
+        Debug.Log("Decision after " + decisionTime.ToString("0.0") + "s, looked at " + lookedAt + " of " + totalPeople);
+    }
+
     private void RightRoute()
     {
         if (sequenceFinished)
             return;
 
         sequenceFinished = true;
+        CaptureDecision(); // NEW
 
         if (leverAnimator == null || trainAnimator == null)
             return;
@@ -135,12 +169,14 @@ public class TrainLeverController : MonoBehaviour
         StartCoroutine(PlayRightTrain());
     }
 
-    private void StraightRoute()
+    private void StraightRoute(bool timedOut)
     {
         if (sequenceFinished)
             return;
 
+        straightWasTimeout = timedOut;
         sequenceFinished = true;
+        CaptureDecision(); // NEW
 
         if (leverAnimator == null || trainAnimator == null)
             return;
@@ -179,7 +215,9 @@ public class TrainLeverController : MonoBehaviour
 
         trainAnimator.SetTrigger(trainRightTrigger);
         yield return WaitForTrainAnimation();
-        yield return OpenDoor();
+
+        // the player pulled the lever (a deliberate choice)
+        yield return ShowResult(false, leverHitsSingleTrack);
     }
 
     private IEnumerator PlayStraightTrain()
@@ -188,7 +226,9 @@ public class TrainLeverController : MonoBehaviour
 
         trainAnimator.SetTrigger(trainStraightTrigger);
         yield return WaitForTrainAnimation();
-        yield return OpenDoor();
+
+        // the train went straight: either the player froze (timer ran out) or deliberately let it run
+        yield return ShowResult(straightWasTimeout, !leverHitsSingleTrack);
     }
 
     private IEnumerator WaitForTrainAnimation()
@@ -203,17 +243,19 @@ public class TrainLeverController : MonoBehaviour
         yield return new WaitForSeconds(length);
     }
 
-    private IEnumerator OpenDoor()
+    // NEW
+    private IEnumerator ShowResult(bool timedOut, bool trainHitSingle)
     {
-        yield return new WaitForSeconds(doorExtraDelay);
+        yield return new WaitForSeconds(resultDelay);
 
-        if (doorAnimator == null)
+        if (resultScreen == null)
         {
-            Debug.LogWarning("Door Animator is not assigned!", this);
+            Debug.LogWarning("Result Screen is not assigned, so no result can be shown.", this);
             yield break;
         }
 
-        Debug.Log("Door opening.");
-        doorAnimator.SetTrigger(doorOpenTrigger);
+        // the "realist" saved the single person, so the train hit the group
+        bool savedTheOne = !trainHitSingle;
+        resultScreen.Show(timedOut, savedTheOne, decisionTime, lookedAt, totalPeople);
     }
 }
