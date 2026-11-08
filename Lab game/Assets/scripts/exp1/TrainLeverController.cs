@@ -29,8 +29,8 @@ public class TrainLeverController : MonoBehaviour
     [Tooltip("Ticked: pulling the lever runs over the SINGLE person (and does nothing = the group of 4 is hit). Unticked: the other way round.")]
     [SerializeField] private bool leverHitsSingleTrack = true;
     [SerializeField] private float resultDelay = 1f; // pause after the train finishes before the result appears
-    [Tooltip("Middle mouse button deliberately lets the train run without pulling the lever. Waiting until the timer ends counts as freezing instead.")]
-    [SerializeField] private int letItRunMouseButton = 2; // 0 = left, 1 = right, 2 = middle
+    [Tooltip("Right mouse button deliberately lets the train run without pulling the lever. Waiting until the timer ends counts as freezing instead.")]
+    [SerializeField] private int letItRunMouseButton = 1; // 0 = left, 1 = right, 2 = middle
 
     [SerializeField] private string leverStateName = "change";
 
